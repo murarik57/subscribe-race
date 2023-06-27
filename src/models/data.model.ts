@@ -1,4 +1,4 @@
-export interface UserData {
+export interface UserObject {
   userID: string;
   picture: string;
   displayName: string;
