@@ -1,26 +1,78 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { UserData } from "./models/data.model";
+import RowComponent from "./components/RowComponent";
 
-function App() {
+const App: React.FC = () => {
+  const usersData: UserData[] = [
+    {
+      userID: "u-1",
+      displayName: "Jone",
+      picture: "",
+      score: 157000,
+    },
+    {
+      userID: "u-2",
+      displayName: "Victoria",
+      picture: "",
+      score: 46200,
+    },
+    {
+      userID: "u-3",
+      displayName: "Joy",
+      picture: "",
+      score: 38800,
+    },
+    {
+      userID: "u-4",
+      displayName: "Quinn",
+      picture: "",
+      score: 33400,
+    },
+    {
+      userID: "u-5",
+      displayName: "Sheenalo",
+      picture: "",
+      score: 31600,
+    },
+    {
+      userID: "u-6",
+      displayName: "Charlene",
+      picture: "",
+      score: 30800,
+    },
+    {
+      userID: "u-7",
+      displayName: "LeonaBaby",
+      picture: "",
+      score: 22300,
+    },
+    {
+      userID: "u-8",
+      displayName: "Sunny",
+      picture: "",
+      score: 17800,
+    },
+    {
+      userID: "u-9",
+      displayName: "ImWord",
+      picture: "",
+      score: 17300,
+    },
+    {
+      userID: "u-10",
+      displayName: "Dophine",
+      picture: "",
+      score: 15400,
+    },
+  ];
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {usersData.map((userData) => (
+        <RowComponent key={userData.userID} data={userData} />
+      ))}
     </div>
   );
-}
+};
 
 export default App;
