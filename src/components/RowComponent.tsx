@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { UserObject } from "../models/data.model";
 import styled from "styled-components";
 // import { Name, Picture, RedCircle, RowItem, ScoreText } from "../App.styles";
@@ -7,15 +7,33 @@ interface RowComponentProps {
   rank: number;
 }
 
-interface CircleProps {
-  rank: number;
-}
-
 const RowComponent: React.FC<RowComponentProps> = ({ data, rank }) => {
+  const prevProps = useRef<number>(rank);
   const { userID, displayName, score, picture } = data;
 
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const [translateY, setTranslateY] = useState<string>("0");
+
+  useEffect(() => {
+    if (rank !== prevProps.current) {
+      const direction = rank < prevProps.current ? "-100%" : "100%";
+      setTranslateY(direction);
+      setIsTransitioning(true);
+
+      const transitionTimeout = setTimeout(() => {
+        setIsTransitioning(false);
+        setTranslateY("0");
+      }, 300);
+      return () => clearTimeout(transitionTimeout);
+    }
+
+    return () => {
+      prevProps.current = rank;
+    };
+  }, [rank]);
+
   return (
-    <Row>
+    <Row transitioning={isTransitioning} translatey={translateY}>
       <RankCircle rank={rank}>
         <span>{rank}</span>
       </RankCircle>
@@ -27,14 +45,17 @@ const RowComponent: React.FC<RowComponentProps> = ({ data, rank }) => {
 };
 
 // Styled components
-const Row = styled.div`
+const Row = styled.div<{ transitioning: boolean; translatey: string }>`
   display: flex;
   align-items: center;
   width: 90%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  transition: transform 0.4s ease-in-out;
+  transform: ${({ transitioning, translatey }) =>
+    transitioning ? `translateY(${translatey})` : "none"};
 `;
 
-const RankCircle = styled.div<CircleProps>`
+const RankCircle = styled.div<{ rank: number }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
